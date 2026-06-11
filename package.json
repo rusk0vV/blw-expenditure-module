@@ -1,0 +1,17 @@
+{
+  "name": "blw-expenditure-module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BLW Expenditure Analysis Dashboard",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run ml\"",
+    "server": "cd server && node app.js",
+    "client": "cd client && npm run dev",
+    "ml": "cd ml && python app.py",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "build": "cd client && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
