@@ -14,6 +14,7 @@ const BillExpenditureSchema = new mongoose.Schema({
   allocation: { type: String },
   allocDesc: { type: String },
   pmtContr: { type: String },
+  status: { type: String },
   allocAmount: { type: Number, default: 0 },
   year: { type: Number },
   quarter: { type: String, enum: ['Q1', 'Q2', 'Q3', 'Q4', null] },

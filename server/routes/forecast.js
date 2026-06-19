@@ -12,7 +12,8 @@ router.get('/', async (req, res, next) => {
       {
         $group: {
           _id: { year: '$year', quarter: '$quarter' },
-          amount: { $sum: '$totalPassed' }
+          amount: { $sum: '$totalPassed' },
+          poAmount: { $sum: '$totalPOValue' }
         }
       }
     ]);
@@ -21,7 +22,8 @@ router.get('/', async (req, res, next) => {
       .map((item) => ({
         year: item._id.year,
         quarter: item._id.quarter,
-        amount: item.amount
+        amount: item.amount,
+        poAmount: item.poAmount
       }))
       .sort((a, b) => a.year - b.year || quarterOrder[a.quarter] - quarterOrder[b.quarter])
       .slice(-8);

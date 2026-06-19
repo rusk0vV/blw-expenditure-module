@@ -34,10 +34,8 @@ and proxies forecast requests to Flask internally.
 
 There are three collections in the `blw_expenditure` database:
 
-| Collection | Source | Purpose |
-|---|---|---|
-| `purchaseorders` | BLW_PurchaseOrders.xlsx | Raw PO records |
-| `billexpenditures` | BLW_BillExpenditureData.xlsx | Raw bill/voucher records |
+| `purchaseorders` | BLW_PO_Railways_Dummy_Data.xlsx | Raw PO records |
+| `billexpenditures` | BLW_CO6_Dummy_Data.xlsx | Raw bill/voucher records |
 | `expendituresummaries` | Built automatically | Pre-aggregated view for dashboard |
 
 The dashboard **only reads from `expendituresummaries`**. The raw collections exist for audit and re-aggregation. Every time a new Excel file is uploaded, `buildSummaries.js` drops and rebuilds `expendituresummaries` from the two raw collections.
@@ -133,71 +131,51 @@ If fewer than 4 data points are available (e.g. the module is brand new and only
 
 ### File 1 — Purchase Orders
 
-Filename pattern: `BLW_PurchaseOrders*.xlsx`
-Header row: **Row 1**
+Filename pattern: `BLW_PO_Railways_Dummy_Data*.xlsx`
+Header row: **Row 1** (Sheet name: `PO_Data`)
 
 | Column Index | Column Name | Type | Notes |
 |---|---|---|---|
-| 0 | POKEY | String | |
-| 1 | PO NO | Number | Required. Upsert key. |
-| 2 | PO DATE | Date string | Used to derive year + quarter |
-| 3 | VNAME | String | Vendor name |
-| 4 | NS | String | Unit |
-| 5 | PO$ VALUEUNIT | Number | |
-| 6 | PL NO | String | |
-| 7 | DES | String | Description |
-| 8 | PO SR | Number | |
-| 9 | CONSNM | String | |
-| 10 | PO QTY | Number | |
-| 11 | DPDT | Date string | Delivery date |
-| 12 | SHORTNAME | String | |
-| 13 | SUPGEY | String | |
-| 14 | CANQTY | Number | Default 0 |
-| 15 | RLY | String | Default BLW |
-| 16 | INSP | String | |
-| 17 | AGENCY | String | OTHER/RDSO/CONSG/CLW |
-| 18 | PV1 | Number | |
-| 19 | ISTAT | String | |
-| 20 | DPSTART | Date string | Nullable |
-| 21 | QTYRNOI | Number | |
-| 22 | STK NS | String | |
-| 23 | TEND | String | ADV/LT |
-| 24 | TYI | String | |
-| 25 | AI | String | |
-| 26 | RATE | Number | |
+| 0 | S.No. | Number | Serial number |
+| 1 | P.O. No. | String | Required. Unique identifier / key. |
+| 2 | Date of Issue | Date string | Used to derive year + quarter |
+| 3 | Vendor Name | String | Vendor name |
+| 4 | Material Description | String | Item/Service description |
+| 5 | Budget Category | String | Used to derive department/headCode |
+| 6 | Quantity | Number | |
+| 7 | Unit | String | |
+| 8 | Accepted Rate (₹) | Number | Unit rate |
+| 9 | Value of Contract (₹ in Lakhs) | Number | Formula result (computed manually as Qty * Rate) |
+| 10 | Tender Type | String | Open/Global/etc. |
+| 11 | Delivery Period (Days) | Number | |
+| 12 | Status | String | Completed/Ongoing/Cancelled |
+| 13 | Portal Source | String | E-procurement source (e.g. IREPS) |
 
 ### File 2 — Bill Expenditure Data
 
-Filename pattern: `BLW_BillExpenditureData*.xlsx`
-Row 1: Workbook ID / metadata — **skip it**.
-Header row: **Row 2**. Data starts at **Row 3**.
+Filename pattern: `BLW_CO6_Dummy_Data*.xlsx`
+Header row: **Row 1** (Sheet name: `CO6_Data`)
 
 | Column Index | Column Name | Type | Notes |
 |---|---|---|---|
-| 0 | # | Number | Row number, ignore |
-| 1 | PARTYNAME | String | |
-| 2 | A0 | String | |
-| 3 | Srp | String | |
-| 4 | SPURSC | String | |
-| 5 | BILLAMOUNT | Number | Required |
-| 6 | PASSEDAM | Number | |
-| 7 | DEDCTOAMT | Number | |
-| 8 | BETAMT | Number | |
-| 9 | CONUMBER | String | Upsert key |
-| 10 | VOUCHERDATE | Date string | Used to derive year + quarter |
-| 11 | ALLOCATION | String | Head code |
-| 12 | ALLOCDESC | String | Head name |
-| 13 | Pmt_Contr | String | |
-| 14 | ALLOCAMOUNT | Number | |
+| 0 | S.No. | Number | Serial number |
+| 1 | Reg Date | Date string | Used to derive year + quarter |
+| 2 | CO6 Reg Ref | String | Required. Unique key (CO number). |
+| 3 | Party Name / Contractor | String | Contractor name |
+| 4 | Department | String | Department/Allocation head code and description |
+| 5 | Compliance Interval | String | e.g. Monthly, Quarterly, Yearly |
+| 6 | Status | String | Passed, Pending, Returned |
+| 7 | Claim Amount (₹) | Number | Claim value |
+| 8 | Passed Amount (₹) | Number | Passed value |
 
 ### Quarter Derivation (same logic for both files)
 ```js
 function getQuarter(date) {
   const month = new Date(date).getMonth() + 1; // 1–12
-  if (month <= 3)  return { quarter: 'Q1' };
-  if (month <= 6)  return { quarter: 'Q2' };
-  if (month <= 9)  return { quarter: 'Q3' };
-  return { quarter: 'Q4' };
+  if (month <= 3)  return 'Q1';
+  if (month <= 6)  return 'Q2';
+  if (month <= 9)  return 'Q3';
+  return 'Q4';
 }
 ```
 

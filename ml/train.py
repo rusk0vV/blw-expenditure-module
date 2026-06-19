@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestRegressor
 QUARTER_MAP = {"Q1": 1, "Q2": 2, "Q3": 3, "Q4": 4}
 
 
-def _clean_historical(historical):
+def _clean_historical(historical, target_key="amount"):
     cleaned = []
     for row in historical:
         quarter = row.get("quarter")
@@ -15,7 +15,7 @@ def _clean_historical(historical):
                 {
                     "year": int(row.get("year")),
                     "quarter": quarter,
-                    "amount": float(row.get("amount", 0)),
+                    "amount": float(row.get(target_key, 0)),
                 }
             )
         except (TypeError, ValueError):
@@ -50,8 +50,8 @@ def build_features(historical):
     return np.array(x_values), np.array(y_values), data, amounts
 
 
-def predict_next_quarter(historical):
-    data = _clean_historical(historical)
+def predict_next_quarter(historical, target_key="amount"):
+    data = _clean_historical(historical, target_key)
     if not data:
         return {
             "predicted_amount": 0,

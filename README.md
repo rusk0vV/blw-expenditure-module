@@ -29,7 +29,7 @@ The React app runs on `http://localhost:5173`, Express on `http://localhost:5000
 
 Use the Settings page to upload:
 
-- `BLW_PurchaseOrders*.xlsx`
-- `BLW_BillExpenditureData*.xlsx`
+- `BLW_PO_Railways_Dummy_Data.xlsx`
+- `BLW_CO6_Dummy_Data.xlsx`
 
-Dashboard expenditure totals use `PASSEDAM` as the primary actual expenditure metric.
+Dashboard expenditure totals use `Passed Amount (₹)` as the primary actual expenditure metric.

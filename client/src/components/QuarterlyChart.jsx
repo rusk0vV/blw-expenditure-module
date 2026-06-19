@@ -17,7 +17,7 @@ const QuarterlyChart = ({ data = [], loading, error }) => {
   const accent = 'var(--accent)';
 
   return (
-    <section className="panel chart-panel">
+    <section className="panel chart-panel-large">
       <div className="panel-heading">
         <h2>Quarterly Expenditure</h2>
       </div>

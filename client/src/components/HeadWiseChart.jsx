@@ -20,7 +20,7 @@ const HeadWiseChart = ({ data = [], loading, error }) => {
   }));
 
   return (
-    <section className="panel chart-panel">
+    <section className="panel chart-panel-medium">
       <div className="panel-heading">
         <h2>Head-wise Expenditure</h2>
       </div>

@@ -38,28 +38,38 @@ const buildSummaries = async () => {
     },
     {
       $group: {
-        _id: { year: '$year', quarter: '$quarter' },
+        _id: {
+          year: '$year',
+          quarter: '$quarter',
+          headCode: '$plNo'
+        },
         totalPOValue: { $sum: '$poValueUnit' }
       }
     }
   ]);
 
-  const poByPeriod = new Map(
-    poGroups.map((item) => [`${item._id.year}-${item._id.quarter}`, item.totalPOValue])
+  const poByPeriodAndHead = new Map(
+    poGroups.map((item) => {
+      const key = `${item._id.year}-${item._id.quarter}-${String(item._id.headCode || '').trim().toUpperCase()}`;
+      return [key, item.totalPOValue];
+    })
   );
 
-  const docs = billGroups.map((item) => ({
-    year: item._id.year,
-    quarter: item._id.quarter,
-    headCode: item._id.headCode || 'UNALLOCATED',
-    headName: item.headName || 'Unallocated',
-    totalBilled: item.totalBilled,
-    totalPassed: item.totalPassed,
-    totalAllocated: item.totalAllocated,
-    totalPOValue: poByPeriod.get(`${item._id.year}-${item._id.quarter}`) || 0,
-    recordCount: item.recordCount,
-    updatedAt: new Date()
-  }));
+  const docs = billGroups.map((item) => {
+    const key = `${item._id.year}-${item._id.quarter}-${String(item._id.headCode || '').trim().toUpperCase()}`;
+    return {
+      year: item._id.year,
+      quarter: item._id.quarter,
+      headCode: item._id.headCode || 'UNALLOCATED',
+      headName: item.headName || 'Unallocated',
+      totalBilled: item.totalBilled,
+      totalPassed: item.totalPassed,
+      totalAllocated: item.totalAllocated,
+      totalPOValue: poByPeriodAndHead.get(key) || 0,
+      recordCount: item.recordCount,
+      updatedAt: new Date()
+    };
+  });
 
   if (docs.length) {
     await ExpenditureSummary.insertMany(docs, { ordered: false });

@@ -17,7 +17,7 @@ const DistributionChart = ({ data = [], loading, error }) => {
   const visible = data.slice(0, 7);
 
   return (
-    <section className="panel chart-panel">
+    <section className="panel chart-panel-donut">
       <div className="panel-heading">
         <h2>Expenditure Distribution</h2>
       </div>

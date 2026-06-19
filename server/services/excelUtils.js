@@ -1,8 +1,18 @@
 const XLSX = require('xlsx');
 
-const readRows = (filePath, sheetIndex = 0) => {
+const readRows = (filePath, sheetNameOrIndex = 0) => {
   const workbook = XLSX.readFile(filePath, { cellDates: true });
-  const sheetName = workbook.SheetNames[sheetIndex];
+  let sheetName;
+  if (typeof sheetNameOrIndex === 'string') {
+    sheetName = workbook.SheetNames.find(
+      (name) => name.toLowerCase() === sheetNameOrIndex.toLowerCase()
+    );
+    if (!sheetName) {
+      sheetName = workbook.SheetNames[0]; // fallback to first sheet if name not found
+    }
+  } else {
+    sheetName = workbook.SheetNames[sheetNameOrIndex];
+  }
   const sheet = workbook.Sheets[sheetName];
   return XLSX.utils.sheet_to_json(sheet, { header: 1, raw: false, defval: null });
 };
@@ -14,7 +24,7 @@ const toStringValue = (value) => {
 
 const toNumber = (value, fallback = null) => {
   if (value === null || value === undefined || value === '') return fallback;
-  const cleaned = String(value).replace(/,/g, '').trim();
+  const cleaned = String(value).replace(/[^0-9.-]/g, '').trim();
   const parsed = Number(cleaned);
   return Number.isFinite(parsed) ? parsed : fallback;
 };

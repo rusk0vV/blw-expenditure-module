@@ -15,8 +15,12 @@ def health():
 def predict():
     data = request.get_json(silent=True) or {}
     historical = data.get("historical", [])
-    result = predict_next_quarter(historical)
-    return jsonify(result)
+    exp_result = predict_next_quarter(historical, 'amount')
+    po_result = predict_next_quarter(historical, 'poAmount')
+    return jsonify({
+        "expenditure": exp_result,
+        "purchase_order": po_result
+    })
 
 
 if __name__ == "__main__":

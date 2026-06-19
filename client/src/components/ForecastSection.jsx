@@ -10,6 +10,7 @@ const ForecastSection = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('expenditure'); // 'expenditure' or 'po'
 
   useEffect(() => {
     let active = true;
@@ -54,6 +55,8 @@ const ForecastSection = () => {
     );
   }
 
+  const activeForecast = activeTab === 'expenditure' ? data?.expenditure : data?.purchase_order;
+
   const {
     predicted_amount = 0,
     growth_rate = 0,
@@ -61,7 +64,7 @@ const ForecastSection = () => {
     projection_label = 'N/A',
     confidence = 'low',
     feature_importance
-  } = data || {};
+  } = activeForecast || {};
 
   const isPositiveGrowth = growth_rate >= 0;
   const growthClass = isPositiveGrowth ? 'growth-positive' : 'growth-negative';
@@ -85,18 +88,71 @@ const ForecastSection = () => {
     lag_2: 'Two Quarters Back Spend (Lag 2)'
   };
 
+  const poFeatureLabels = {
+    time_index: 'Time Trend (Sequential sequence of quarters)',
+    quarter_number: 'Seasonality (Target Quarter 1 to 4)',
+    lag_1: 'Previous Quarter PO Value (Lag 1)',
+    lag_2: 'Two Quarters Back PO Value (Lag 2)'
+  };
+
+  const labels = activeTab === 'expenditure' ? featureLabels : poFeatureLabels;
+
   return (
     <section className="panel chart-panel-large" aria-label="Forecast Projections">
-      <div className="panel-heading">
-        <h2>Expenditure Forecast Projections</h2>
+      <div className="panel-heading" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+        <h2>Expenditure & Commitments Forecasting</h2>
         <span className={`confidence-badge ${getConfidenceClass(confidence)}`}>
           {confidence} Confidence
         </span>
       </div>
 
+      {/* Tabs Control */}
+      <div className="forecast-tabs" style={{ display: 'flex', gap: '0.5rem', borderBottom: '1px solid var(--border)', marginBottom: '1.25rem', overflowX: 'auto' }}>
+        <button
+          type="button"
+          onClick={() => setActiveTab('expenditure')}
+          className={`tab-btn ${activeTab === 'expenditure' ? 'active' : ''}`}
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: '0.75rem 1rem',
+            cursor: 'pointer',
+            fontWeight: 600,
+            fontSize: '0.85rem',
+            color: activeTab === 'expenditure' ? 'var(--accent)' : 'var(--text-secondary)',
+            borderBottom: activeTab === 'expenditure' ? '3px solid var(--accent)' : '3px solid transparent',
+            transition: 'all 0.2s ease',
+            outline: 'none',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          Passed Bills Expenditure
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('po')}
+          className={`tab-btn ${activeTab === 'po' ? 'active' : ''}`}
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: '0.75rem 1rem',
+            cursor: 'pointer',
+            fontWeight: 600,
+            fontSize: '0.85rem',
+            color: activeTab === 'po' ? 'var(--accent)' : 'var(--text-secondary)',
+            borderBottom: activeTab === 'po' ? '3px solid var(--accent)' : '3px solid transparent',
+            transition: 'all 0.2s ease',
+            outline: 'none',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          Purchase Orders Commitments
+        </button>
+      </div>
+
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '1rem' }}>
         <div className="stat-card" style={{ boxShadow: 'none', border: '1px solid var(--border)' }}>
-          <span>Next Quarter Projection</span>
+          <span>{activeTab === 'expenditure' ? 'Next Qtr Projected Cash Outflow' : 'Next Qtr Projected Commitments'}</span>
           <strong>{formatINR(predicted_amount, currencyMode)}</strong>
           <small>Projected for {projection_label}</small>
         </div>
@@ -126,7 +182,7 @@ const ForecastSection = () => {
         {isOpen && (
           <div className="accordion-content">
             <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-              Projections are computed using a {model_used} model trained dynamically on available historical aggregates.
+              Projections are computed using a {model_used} model trained dynamically on historical {activeTab === 'expenditure' ? 'vouchers passed' : 'purchase orders issued'} aggregates.
             </p>
 
             {feature_importance ? (
@@ -139,7 +195,7 @@ const ForecastSection = () => {
                   return (
                     <div key={key} className="feature-item">
                       <div className="feature-label">
-                        <span>{featureLabels[key] || key}</span>
+                        <span>{labels[key] || key}</span>
                         <strong>{percent}%</strong>
                       </div>
                       <div className="feature-bar-container">

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const PurchaseOrderSchema = new mongoose.Schema({
   poKey: { type: String },
-  poNo: { type: Number, required: true, unique: true, index: true },
+  poNo: { type: String, required: true, unique: true, index: true },
   poDate: { type: Date },
   vname: { type: String },
   ns: { type: String },

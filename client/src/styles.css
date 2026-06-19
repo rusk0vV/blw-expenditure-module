@@ -171,6 +171,7 @@ a {
 
 .panel:hover {
   box-shadow: var(--shadow-hover);
+  border-color: rgba(var(--accent-rgb), 0.4);
 }
 
 .panel-heading {
@@ -199,6 +200,7 @@ a {
   border-radius: 12px;
   margin-bottom: 2rem;
   box-shadow: var(--shadow);
+  grid-column: span 4;
 }
 
 .filter-group {
@@ -323,7 +325,7 @@ a {
 
 /* --- Chart Panel layout --- */
 .chart-panel-large {
-  grid-column: span 2;
+  grid-column: span 4;
 }
 
 .chart-panel-medium {
