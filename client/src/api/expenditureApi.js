@@ -24,6 +24,7 @@ export const getQuarterly = (filters) => get('/expenditure/quarterly', filters);
 export const getByHead = (filters) => get('/expenditure/by-head', filters);
 export const getDistribution = (filters) => get('/expenditure/distribution', filters);
 export const getForecast = () => get('/forecast');
+export const getTopItems = (filters) => get('/expenditure/top-items', filters);
 
 export const uploadWorkbook = async (kind, file, onUploadProgress) => {
   const formData = new FormData();

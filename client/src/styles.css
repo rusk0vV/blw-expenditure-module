@@ -2,20 +2,20 @@
 
 /* --- Theme System Variable Definitions --- */
 body.theme-light {
-  --bg-primary: #FAF8F5;
+  --bg-primary: #F8FAFC; /* Clean cool gray/blue */
   --bg-card: #FFFFFF;
-  --text-primary: #1A1A1A;
-  --text-secondary: #6B7280;
-  --accent: #C8A96E; /* Railway Gold */
-  --accent-rgb: 200, 169, 110;
-  --border: #E5E2DC;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.08);
-  --success: #10B981;
+  --text-primary: #0F172A; /* Deep slate */
+  --text-secondary: #64748B; /* Slate gray */
+  --accent: #5A52E5; /* Indigo/Purple */
+  --accent-rgb: 90, 82, 229;
+  --border: #E2E8F0; /* Clean border */
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.05);
+  --success: #10B981; /* Emerald green */
   --warning: #F59E0B;
   --danger: #EF4444;
   --nav-bg: #FFFFFF;
-  --nav-border: #E5E2DC;
+  --nav-border: #E2E8F0;
 }
 
 body.theme-dark {
@@ -283,44 +283,155 @@ a {
 }
 
 /* --- Stat Card --- */
-.stat-card {
+/* --- Stat Card Premium --- */
+.stat-card-premium {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.5rem;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.stat-card:hover {
-  transform: translateY(-2px);
+.stat-card-premium:hover {
+  transform: translateY(-3px);
   box-shadow: var(--shadow-hover);
-  border-color: var(--accent);
+  border-color: rgba(var(--accent-rgb), 0.4);
 }
 
-.stat-card span {
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.stat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.stat-card-icon-wrapper {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.stat-card-icon-wrapper.success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.stat-card-icon-wrapper.warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
+}
+
+.stat-card-icon-wrapper.info {
+  background-color: rgba(90, 82, 229, 0.1);
+  color: var(--accent);
+}
+
+.stat-card-icon-wrapper.neutral {
+  background-color: rgba(100, 116, 139, 0.1);
   color: var(--text-secondary);
-  margin-bottom: 0.5rem;
 }
 
-.stat-card strong {
-  font-size: 1.75rem;
+.stat-card-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.stat-card-badge.badge-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.stat-card-badge.badge-warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
+}
+
+.stat-card-badge.badge-info {
+  background-color: rgba(90, 82, 229, 0.1);
+  color: var(--accent);
+}
+
+.stat-card-badge.badge-neutral {
+  background-color: rgba(100, 116, 139, 0.1);
+  color: var(--text-secondary);
+}
+
+.stat-card-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.stat-card-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-secondary);
+  margin-bottom: 0.35rem;
+}
+
+.stat-card-value {
+  font-size: 1.85rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 0.25rem;
-  word-break: break-word;
+  line-height: 1.2;
 }
 
-.stat-card small {
+.stat-card-subtext {
   font-size: 0.75rem;
   color: var(--text-secondary);
+  margin-top: 0.5rem;
   display: block;
+}
+
+.stat-card-progress-container {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.stat-card-progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: var(--bg-primary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.stat-card-progress-fill {
+  height: 100%;
+  background-color: var(--success);
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.stat-card-progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.stat-card-progress-info strong {
+  color: var(--text-primary);
 }
 
 /* --- Chart Panel layout --- */

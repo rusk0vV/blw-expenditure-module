@@ -51,7 +51,8 @@ const HeadWiseChart = ({ data = [], loading, error }) => {
               labelFormatter={(_, payload) => payload?.[0]?.payload?.headName || ''}
             />
             <Legend verticalAlign="bottom" />
-            <Bar dataKey="amount" name="Passed Amount" fill="var(--accent)" radius={[0, 4, 4, 0]} />
+            <Bar dataKey="billed" name="Claimed Amount" fill="#5A52E5" radius={[0, 4, 4, 0]} />
+            <Bar dataKey="amount" name="Passed Amount" fill="#10B981" radius={[0, 4, 4, 0]} />
           </BarChart>
         </ResponsiveContainer>
       ) : null}

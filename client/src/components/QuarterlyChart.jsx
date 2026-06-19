@@ -42,7 +42,8 @@ const QuarterlyChart = ({ data = [], loading, error }) => {
             />
             <Tooltip formatter={(value) => formatINR(value, currencyMode)} />
             <Legend verticalAlign="bottom" />
-            <Bar dataKey="amount" name="Passed Amount" fill={accent} radius={[4, 4, 0, 0]} />
+            <Bar dataKey="billed" name="Claimed Amount" fill="#5A52E5" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="amount" name="Passed Amount" fill="#10B981" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       ) : null}

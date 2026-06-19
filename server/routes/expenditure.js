@@ -7,6 +7,7 @@ const parseBillExpenditure = require('../services/parseBillExpenditure');
 const buildSummaries = require('../services/buildSummaries');
 const ExpenditureSummary = require('../models/ExpenditureSummary');
 const BillExpenditure = require('../models/BillExpenditure');
+const PurchaseOrder = require('../models/PurchaseOrder');
 
 const router = express.Router();
 
@@ -256,6 +257,52 @@ router.get(
     ]);
 
     res.json({ success: true, page, limit, total, data: items });
+  })
+);
+
+router.get(
+  '/top-items',
+  asyncHandler(async (req, res) => {
+    const filter = makeFilter(req.query);
+    
+    // Map filters to PO/Bill collection fields
+    const poFilter = {};
+    if (filter.year) poFilter.year = filter.year;
+    if (filter.quarter) poFilter.quarter = filter.quarter;
+    if (filter.headCode) poFilter.plNo = filter.headCode;
+
+    const billFilter = {};
+    if (filter.year) billFilter.year = filter.year;
+    if (filter.quarter) billFilter.quarter = filter.quarter;
+    if (filter.headCode) billFilter.allocation = filter.headCode;
+
+    const [topPOs, topBills] = await Promise.all([
+      PurchaseOrder.find(poFilter)
+        .sort({ poValueUnit: -1 })
+        .limit(5)
+        .lean(),
+      BillExpenditure.find(billFilter)
+        .sort({ billAmount: -1 })
+        .limit(5)
+        .lean()
+    ]);
+
+    res.json({
+      success: true,
+      pos: topPOs.map(p => ({
+        poNo: p.poNo,
+        vendor: p.vname,
+        department: p.plNo,
+        value: p.poValueUnit
+      })),
+      bills: topBills.map(b => ({
+        coNumber: b.coNumber,
+        party: b.partyName,
+        department: b.allocation,
+        status: b.status,
+        value: b.billAmount
+      }))
+    });
   })
 );
 

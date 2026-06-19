@@ -15,6 +15,8 @@ const COLORS = ['#C8A96E', '#2F80ED', '#27AE60', '#EB5757', '#9B51E0', '#F2994A'
 const DistributionChart = ({ data = [], loading, error }) => {
   const { currencyMode } = useTheme();
   const visible = data.slice(0, 7);
+  const totalPassedAmount = visible.reduce((sum, item) => sum + item.amount, 0);
+  const PIE_COLORS = ['#10B981', '#3B82F6', '#EF4444', '#F59E0B', '#9B51E0', '#56CCF2'];
 
   return (
     <section className="panel chart-panel-donut">
@@ -36,9 +38,37 @@ const DistributionChart = ({ data = [], loading, error }) => {
               paddingAngle={2}
             >
               {visible.map((entry, index) => (
-                <Cell key={entry.headCode} fill={COLORS[index % COLORS.length]} />
+                <Cell key={entry.headCode} fill={PIE_COLORS[index % PIE_COLORS.length]} />
               ))}
             </Pie>
+            <text
+              x="50%"
+              y="44%"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              style={{
+                fontSize: '0.65rem',
+                fontWeight: 600,
+                fill: 'var(--text-secondary)',
+                textTransform: 'uppercase',
+                letterSpacing: '1px'
+              }}
+            >
+              Claims Base
+            </text>
+            <text
+              x="50%"
+              y="54%"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              style={{
+                fontSize: '1.05rem',
+                fontWeight: 700,
+                fill: 'var(--text-primary)'
+              }}
+            >
+              {formatINR(totalPassedAmount, currencyMode)}
+            </text>
             <Tooltip
               formatter={(value, name, payload) => [
                 `${formatINR(value, currencyMode)} (${payload.payload.percentage}%)`,
