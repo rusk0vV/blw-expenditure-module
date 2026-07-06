@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom';
+import logo from '../assets/blw-logo-image.png';
 
 const Navbar = () => (
   <header className="navbar">
     <NavLink to="/" className="brand">
-      <span className="brand-mark">BLW</span>
+      <img src={logo} alt="BLW Logo" className="brand-logo" />
       <span>
         <strong>Expenditure Analysis</strong>
         <small>Banaras Locomotive Works</small>

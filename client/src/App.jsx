@@ -6,6 +6,12 @@ import Settings from './pages/Settings.jsx';
 
 const App = () => (
   <>
+    <div className="ambient-background" aria-hidden="true">
+      <div className="ambient-line line-1"></div>
+      <div className="ambient-line line-2"></div>
+      <div className="ambient-line line-3"></div>
+      <div className="ambient-line line-4"></div>
+    </div>
     <Navbar />
     <main className="app-shell">
       <Routes>

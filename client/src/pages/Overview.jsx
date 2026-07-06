@@ -41,66 +41,52 @@ const Overview = () => (
       </section>
     </div>
 
-    <section className="panel" aria-labelledby="tech-stack-heading">
-      <h2 id="tech-stack-heading" style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', borderBottom: '2px solid var(--accent)', paddingBottom: '0.25rem', display: 'inline-block' }}>
-        Technology Stack
+    <section className="panel" aria-labelledby="faq-heading">
+      <h2 id="faq-heading" style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1.5rem', borderBottom: '2px solid var(--accent)', paddingBottom: '0.25rem', display: 'inline-block' }}>
+        Frequently Asked Questions & Troubleshooting
       </h2>
-      <table className="tech-table">
-        <thead>
-          <tr>
-            <th>Layer</th>
-            <th>Technology</th>
-            <th>Purpose</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Frontend</strong></td>
-            <td>React 18 + Vite</td>
-            <td>Client UI application scaffolding</td>
-          </tr>
-          <tr>
-            <td><strong>Charting</strong></td>
-            <td>Recharts</td>
-            <td>Interactive vector data visualizations</td>
-          </tr>
-          <tr>
-            <td><strong>HTTP Client</strong></td>
-            <td>Axios</td>
-            <td>API routing communication</td>
-          </tr>
-          <tr>
-            <td><strong>Backend</strong></td>
-            <td>Node.js + Express</td>
-            <td>REST API routing and Excel ingestion server</td>
-          </tr>
-          <tr>
-            <td><strong>Database</strong></td>
-            <td>MongoDB + Mongoose</td>
-            <td>Document data persistence layer</td>
-          </tr>
-          <tr>
-            <td><strong>Excel Processing</strong></td>
-            <td>SheetJS (xlsx)</td>
-            <td>Workbook parsing and extraction service</td>
-          </tr>
-          <tr>
-            <td><strong>ML Microservice</strong></td>
-            <td>Python + Flask</td>
-            <td>Time-series regression forecasting API</td>
-          </tr>
-          <tr>
-            <td><strong>ML Classifier</strong></td>
-            <td>scikit-learn (RandomForest)</td>
-            <td>Expenditure projection models</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="faq-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: '2rem' }}>
+        <div className="faq-item">
+          <h4 style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.5rem', fontSize: '0.95rem' }}>
+            How do I ingest new expenditure workbooks?
+          </h4>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: '1.6' }}>
+            Navigate to the <strong>Settings</strong> page, then drag and drop or select your Purchase Orders (<code>BLW_PurchaseOrders*.xlsx</code>) or Voucher Expenditure (<code>BLW_BillExpenditureData*.xlsx</code>) files. The application will parse, validate, and update the metrics in real time.
+          </p>
+        </div>
+
+        <div className="faq-item">
+          <h4 style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.5rem', fontSize: '0.95rem' }}>
+            What is a CO6 Claim and how does it differ from a Purchase Order (PO)?
+          </h4>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: '1.6' }}>
+            A <strong>Purchase Order (PO)</strong> represents an official financial commitment or contract sanctioned for procurement. A <strong>CO6 Claim</strong> is a vendor voucher/bill registered for actual payment disbursements against executed jobs or supplies.
+          </p>
+        </div>
+
+        <div className="faq-item">
+          <h4 style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.5rem', fontSize: '0.95rem' }}>
+            What does the forecasting "Confidence Level" mean?
+          </h4>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: '1.6' }}>
+            The machine learning engine assigns confidence based on variance metrics and continuous sequence availability. High confidence implies multiple years of continuous historical quarters without significant spending anomalies.
+          </p>
+        </div>
+
+        <div className="faq-item">
+          <h4 style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.5rem', fontSize: '0.95rem' }}>
+            What should I check if an Excel upload fails?
+          </h4>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: '1.6' }}>
+            Ensure the Excel file retains its original columns (e.g., CO Number, Party Name, PO Number, Net Value). Modifying structure, headers, or saving as an incompatible CSV format will cause ingestion failures.
+          </p>
+        </div>
+      </div>
     </section>
 
     <footer className="panel" style={{ textAlign: 'center', borderStyle: 'dashed' }} aria-label="Project Team Information">
       <p style={{ fontWeight: 600, marginBottom: '0.25rem' }}>
-        Developed by interns: Ali, Vedansh, and Priyanshu [BLW IT Department — 2025–26]
+        Developed by: Ali Sayeed [BLW IT Department — 2025–26]
       </p>
       <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
         Banaras Locomotive Works, Varanasi, India | Ministry of Railways, Government of India

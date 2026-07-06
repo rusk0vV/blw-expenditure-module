@@ -98,6 +98,50 @@ a {
   gap: 0.75rem;
 }
 
+.brand-logo {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  transition: transform 0.2s ease;
+}
+
+.brand-logo:hover {
+  transform: scale(1.05);
+}
+
+/* --- Stat Card --- */
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  background-color: var(--bg-card);
+  gap: 0.35rem;
+  position: relative;
+  z-index: 2;
+}
+
+.stat-card span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-secondary);
+}
+
+.stat-card strong {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.stat-card small {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
 .brand-mark {
   background-color: var(--accent);
   color: #FFFFFF;
@@ -150,6 +194,8 @@ a {
 }
 
 .app-shell {
+  position: relative;
+  z-index: 2;
   margin-top: 70px;
   min-height: calc(100vh - 70px);
   padding: 2rem;
@@ -926,5 +972,133 @@ a {
   }
   100% {
     background-position: -200% 0;
+  }
+}
+
+/* --- Clean Text Justification --- */
+.panel p,
+.overview-card p,
+.overview-card li,
+.settings-content p {
+  text-align: justify;
+}
+
+/* --- Ambient Background Animations --- */
+.ambient-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; /* Places the background animation on top of the body background but behind panel components (z-index 2) */
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.ambient-line {
+  position: absolute;
+  border-radius: 999px;
+  opacity: 0;
+}
+
+.line-1 {
+  top: 18%;
+  left: 5%;
+  width: 250px;
+  height: 3px;
+  background: linear-gradient(90deg, #5A52E5, #00C6FF);
+  filter: drop-shadow(0 0 10px rgba(90, 82, 229, 0.95));
+  transform: rotate(-15deg);
+  animation: glow-pulse-1 14s infinite ease-in-out;
+}
+
+.line-2 {
+  top: 40%;
+  right: 8%;
+  width: 320px;
+  height: 3px;
+  background: linear-gradient(90deg, #FF9933, #EF4444);
+  filter: drop-shadow(0 0 10px rgba(255, 153, 51, 0.95));
+  transform: rotate(25deg);
+  animation: glow-pulse-2 18s infinite ease-in-out;
+}
+
+.line-3 {
+  bottom: 25%;
+  left: 8%;
+  width: 220px;
+  height: 3px;
+  background: linear-gradient(90deg, #10B981, #00D2FF);
+  filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.95));
+  transform: rotate(-30deg);
+  animation: glow-pulse-3 16s infinite ease-in-out;
+}
+
+.line-4 {
+  top: 70%;
+  right: 20%;
+  width: 280px;
+  height: 3px;
+  background: linear-gradient(90deg, #C8A96E, #FF9933);
+  filter: drop-shadow(0 0 10px rgba(200, 169, 110, 0.95));
+  transform: rotate(15deg);
+  animation: glow-pulse-4 20s infinite ease-in-out;
+}
+
+@keyframes glow-pulse-1 {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-15deg) scale(0.85);
+  }
+  30%, 70% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 0.95;
+    transform: translate(3vw, 2vh) rotate(-12deg) scale(1.1);
+  }
+}
+
+@keyframes glow-pulse-2 {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(25deg) scale(0.9);
+  }
+  25%, 75% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.85;
+    transform: translate(-2vw, -3vh) rotate(20deg) scale(1.05);
+  }
+}
+
+@keyframes glow-pulse-3 {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-30deg) scale(0.85);
+  }
+  40%, 80% {
+    opacity: 0.60;
+  }
+  60% {
+    opacity: 0.90;
+    transform: translate(2vw, -2vh) rotate(-25deg) scale(1.15);
+  }
+}
+
+@keyframes glow-pulse-4 {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(15deg) scale(0.9);
+  }
+  35%, 85% {
+    opacity: 0.55;
+  }
+  60% {
+    opacity: 0.85;
+    transform: translate(-3vw, 2vh) rotate(10deg) scale(1);
   }
 }
