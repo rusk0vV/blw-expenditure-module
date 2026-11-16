@@ -1,6 +1,7 @@
 node_modules/
 client/node_modules/
 server/node_modules/
+reference-documentation/
 client/dist/
 uploads/
 .env
